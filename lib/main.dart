@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:news/ui/home/home_screen.dart';
-import 'package:news/ui/settings/settings_screen.dart';
+import 'package:news/ui/news/news_details_screen.dart';
 
 import 'my_theme.dart';
 
@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       routes: {
         HomeScreen.routeName: (_) => HomeScreen(),
-        SettingScreen.routeName: (_) => SettingScreen(),
+        NewsDetailsScreen.routeName: (_) => NewsDetailsScreen(),
       },
       initialRoute: HomeScreen.routeName,
     );

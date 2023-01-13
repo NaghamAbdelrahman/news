@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-class CategoryWidget extends StatelessWidget {
+class CategoryStyle extends StatelessWidget {
   Category category;
   int index;
   Function onClickItem;
 
-  CategoryWidget(
+  CategoryStyle(
       {required this.category, required this.index, required this.onClickItem});
 
   @override
@@ -34,7 +34,6 @@ class CategoryWidget extends StatelessWidget {
     );
   }
 }
-
 class Category {
   String id;
   String tittle;
