@@ -8,6 +8,11 @@ class MyTheme {
           color: appPrimary,
           centerTitle: true,
           elevation: 0,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(25),
+                bottomRight: Radius.circular(25)),
+          ),
           titleTextStyle: TextStyle(fontSize: 22)),
       scaffoldBackgroundColor: Colors.transparent,
       textTheme: const TextTheme(
