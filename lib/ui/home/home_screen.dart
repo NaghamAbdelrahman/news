@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:news/ui/home/category_news_list.dart';
+import 'package:news/ui/category/category_widget.dart';
+import 'package:news/ui/news/search_delegate.dart';
 
-import 'category.dart';
+import 'category_style.dart';
 import 'drawer_content.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -14,15 +15,12 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   List<Category> categories = [
     Category(id: 'sports', tittle: 'Sports', color: const Color(0xffC91C22)),
-    Category(
-        id: 'Politics', tittle: 'Politics', color: const Color(0xff003E90)),
+    Category(id: 'general', tittle: 'General', color: const Color(0xff003E90)),
     Category(id: 'health', tittle: 'Health', color: const Color(0xffED1E79)),
     Category(
-        id: 'bussines', tittle: 'Bussines', color: const Color(0xffCF7E48)),
+        id: 'business', tittle: 'Business', color: const Color(0xffCF7E48)),
     Category(
-        id: 'environment',
-        tittle: 'Enviroment',
-        color: const Color(0xff4882CF)),
+        id: 'technology', tittle: 'Technology', color: const Color(0xff4882CF)),
     Category(id: 'science', tittle: 'Science', color: const Color(0xffF2D352)),
   ];
 
@@ -38,11 +36,16 @@ class _HomeScreenState extends State<HomeScreen> {
         appBar: AppBar(
           title: Text(
               selectedCategory == null ? 'News App' : selectedCategory!.tittle),
-          shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(25),
-                bottomRight: Radius.circular(25)),
-          ),
+          actions: [
+            selectedCategory != null
+                ? IconButton(
+                    onPressed: () {
+                      showSearch(
+                          context: context, delegate: NewsSearchDelegate());
+                    },
+                    icon: Icon(Icons.search))
+                : SizedBox()
+          ],
         ),
         drawer: Drawer(
           child: DrawerContent(categoryOnTap: () {
@@ -78,7 +81,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 childAspectRatio: .91),
                         padding: const EdgeInsets.symmetric(horizontal: 6),
                         itemBuilder: (context, index) {
-                          return CategoryWidget(
+                          return CategoryStyle(
                             category: categories[index],
                             index: index,
                             onClickItem: onClick,
@@ -90,13 +93,12 @@ class _HomeScreenState extends State<HomeScreen> {
                   ],
                 ),
               )
-            : const CategoryNewsList(),
+            : CategoryWidget(selectedCategory!),
       ),
     );
   }
 
   Category? selectedCategory = null;
-
   void onClick(Category category) {
     setState(() {
       selectedCategory = category;

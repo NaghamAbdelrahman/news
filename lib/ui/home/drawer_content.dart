@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:news/ui/settings/settings_screen.dart';
 
 class DrawerContent extends StatelessWidget {
   Function categoryOnTap;
@@ -43,29 +42,6 @@ class DrawerContent extends StatelessWidget {
                 ),
                 Text(
                   'Categories',
-                  style: Theme.of(context).textTheme.headline5,
-                )
-              ],
-            ),
-          ),
-        ),
-        InkWell(
-          onTap: () {
-            Navigator.pushNamed(context, SettingScreen.routeName);
-          },
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              children: [
-                const Icon(
-                  Icons.settings,
-                  size: 42,
-                ),
-                const SizedBox(
-                  width: 12,
-                ),
-                Text(
-                  'Settings',
                   style: Theme.of(context).textTheme.headline5,
                 )
               ],
