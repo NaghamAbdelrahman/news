@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:news/ui/news/news_viewModel.dart';
 
 import '../../core/api/api_manager.dart';
 import '../../core/model/NewsResponse.dart';
 import 'news_item.dart';
 
 class NewsSearchDelegate extends SearchDelegate {
+  NewsListViewModel viewModel = NewsListViewModel();
+
   @override
   ThemeData appBarTheme(BuildContext context) {
     return ThemeData(appBarTheme: Theme.of(context).appBarTheme);

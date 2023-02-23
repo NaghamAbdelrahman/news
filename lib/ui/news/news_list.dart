@@ -1,41 +1,66 @@
 import 'package:flutter/material.dart';
-import 'package:news/core/api/api_manager.dart';
-import 'package:news/core/model/NewsResponse.dart';
+import 'package:news/base/base_state.dart';
 import 'package:news/core/model/Source.dart';
 import 'package:news/ui/news/news_item.dart';
+import 'package:news/ui/news/news_navigator.dart';
+import 'package:news/ui/news/news_viewModel.dart';
+import 'package:provider/provider.dart';
 
-class NewsList extends StatelessWidget {
+class NewsList extends StatefulWidget {
   Source source;
 
   NewsList(this.source);
 
   @override
+  State<NewsList> createState() => _NewsListState();
+}
+
+class _NewsListState extends BaseState<NewsList, NewsListViewModel>
+    implements NewsNavigator {
+  @override
+  NewsListViewModel initViewModel() {
+    // TODO: implement initViewModel
+    return NewsListViewModel();
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    viewModel.getNewsBySourceId(widget.source.id!);
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return FutureBuilder<NewsResponse>(
-        future: ApiManager.getNews(soureID: source.id),
-        builder: (buildContext, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(
-              child: CircularProgressIndicator(),
+    return ChangeNotifierProvider<NewsListViewModel>(
+        create: (_) => viewModel,
+        child: Consumer<NewsListViewModel>(
+          builder: (_, viewModel, __) {
+            if (viewModel.errorMessage != null) {
+              return Center(
+                child: Column(
+                  children: [
+                    Text(viewModel.errorMessage!),
+                    ElevatedButton(
+                        onPressed: () {
+                          viewModel.getNewsBySourceId(widget.source.id!);
+                        },
+                        child: const Text('Try Again'))
+                  ],
+                ),
+              );
+            } else if (viewModel.newsList == null) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+            return ListView.builder(
+              itemBuilder: (_, index) {
+                return NewsItem(viewModel.newsList![index]);
+              },
+              itemCount: viewModel.newsList?.length ?? 0,
             );
-          }
-          if (snapshot.hasError) {
-            return Center(
-              child: Text('Error loading data \n${snapshot.error}'),
-            );
-          }
-          if (snapshot.data?.status == 'error') {
-            return Center(
-              child: Text('Server Error \n${snapshot.data?.message}'),
-            );
-          }
-          var newsList = snapshot.data?.articles;
-          return ListView.builder(
-            itemBuilder: (_, index) {
-              return NewsItem(newsList![index]);
-            },
-            itemCount: newsList?.length ?? 0,
-          );
-        });
+          },
+        ));
   }
 }

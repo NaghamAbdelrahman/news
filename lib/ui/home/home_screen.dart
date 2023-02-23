@@ -43,8 +43,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       showSearch(
                           context: context, delegate: NewsSearchDelegate());
                     },
-                    icon: Icon(Icons.search))
-                : SizedBox()
+                    icon: const Icon(Icons.search))
+                : const SizedBox()
           ],
         ),
         drawer: Drawer(
