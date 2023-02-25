@@ -1,27 +1,38 @@
-import 'package:news/base/base_navigator.dart';
-import 'package:news/base/base_viewModel.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:news/core/api/api_manager.dart';
 
-import '../../core/api/api_manager.dart';
 import '../../core/model/Source.dart';
 
-class CategoryWidgetViewModel extends BaseViewModel<CategoryWidgetNavigator> {
-  List<Source>? sources;
-  String? errorMessage;
+class CategoryViewModel extends Cubit<CategoryWidgetState> {
+  CategoryViewModel() : super(LoadingState());
 
-  void loadNewsSources(String categoryId) async {
-    errorMessage = null;
-    notifyListeners();
+  void loadSources(String categoryID) async {
+    emit(LoadingState());
     try {
-      var response = await ApiManager.getSources(categoryId);
+      var response = await ApiManager.getSources(categoryID);
       if (response.status == 'error') {
-        errorMessage = 'Server Error \n${response.message}';
+        emit(ErrorState('Server Error \n${response.message}'));
+      } else {
+        emit(SourcesLoadedState(response.sources!));
       }
-      sources = response.sources;
     } catch (e) {
-      errorMessage = 'error getting news sources';
+      emit(ErrorState('Error loading sources'));
     }
-    notifyListeners();
   }
 }
 
-abstract class CategoryWidgetNavigator extends BaseNavigator {}
+abstract class CategoryWidgetState {}
+
+class LoadingState extends CategoryWidgetState {}
+
+class ErrorState extends CategoryWidgetState {
+  String errorMessage;
+
+  ErrorState(this.errorMessage);
+}
+
+class SourcesLoadedState extends CategoryWidgetState {
+  List<Source> sources;
+
+  SourcesLoadedState(this.sources);
+}

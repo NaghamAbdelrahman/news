@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:news/base/base_state.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:news/ui/category/category_tabs_widget.dart';
 import 'package:news/ui/category/category_viewModel.dart';
-import 'package:provider/provider.dart';
+import 'package:news/utils/dialog_utils.dart';
 
 import '../home/category_style.dart';
 
@@ -15,45 +15,44 @@ class CategoryWidget extends StatefulWidget {
   State<CategoryWidget> createState() => _CategoryWidgetState();
 }
 
-class _CategoryWidgetState
-    extends BaseState<CategoryWidget, CategoryWidgetViewModel>
-    implements CategoryWidgetNavigator {
+class _CategoryWidgetState extends State<CategoryWidget> {
+  CategoryViewModel viewModel = CategoryViewModel();
+
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    viewModel.loadNewsSources(widget.category.id);
+    viewModel.loadSources(widget.category.id);
   }
 
   @override
-  CategoryWidgetViewModel initViewModel() => CategoryWidgetViewModel();
-
-  @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<CategoryWidgetViewModel>(
-        create: (_) => viewModel,
-        child: Consumer<CategoryWidgetViewModel>(
-            builder: (buildContext, viewModel, _) {
-          if (viewModel.errorMessage != null) {
-            return Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(viewModel.errorMessage!),
-                  ElevatedButton(
-                      onPressed: () {
-                        viewModel.loadNewsSources(widget.category.id);
-                      },
-                      child: const Text('Try Again'))
-                ],
-              ),
-            );
-          } else if (viewModel.sources == null) {
+    return BlocProvider<CategoryViewModel>(
+      create: (_) => viewModel,
+      child: BlocConsumer<CategoryViewModel, CategoryWidgetState>(
+        listener: (context, state) {
+          if (state is ErrorState) {
+            DialogUtils.showMessageDialog(context, state.errorMessage,
+                posActionTittle: 'Try Again',
+                isDismisable: false, posAction: () {
+              viewModel.loadSources(widget.category.id);
+            });
+          }
+        },
+        listenWhen: (prevState, newState) {
+          if (newState is ErrorState) return true;
+          return false;
+        },
+        builder: (context, state) {
+          if (state is LoadingState) {
             return const Center(
               child: CircularProgressIndicator(),
             );
+          } else if (state is SourcesLoadedState) {
+            return CategoryTabsWidget(state.sources!);
           }
-          return CategoryTabsWidget(viewModel.sources!);
-        }));
+          return Container();
+        },
+      ),
+    );
   }
 }

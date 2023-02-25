@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:news/ui/news/news_viewModel.dart';
 
-import '../../core/api/api_manager.dart';
-import '../../core/model/NewsResponse.dart';
+import '../../utils/dialog_utils.dart';
 import 'news_item.dart';
 
 class NewsSearchDelegate extends SearchDelegate {
@@ -35,8 +35,33 @@ class NewsSearchDelegate extends SearchDelegate {
 
   @override
   Widget buildResults(BuildContext context) {
-    // TODO: implement buildResults
-    return FutureBuilder<NewsResponse>(
+    viewModel.getNewsBySearch(query);
+    return BlocConsumer<NewsListViewModel, NewsListState>(
+        bloc: viewModel,
+        listener: (context, state) {
+          if (state is ErrorState) {
+            DialogUtils.showMessageDialog(context, state.errorMessage,
+                posActionTittle: 'Try Again', posAction: () {
+              viewModel.getNewsBySourceId(query);
+            }, isDismisable: false);
+          }
+        },
+        builder: (context, state) {
+          if (state is LoadingState) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          } else if (state is NewsLoadedState) {
+            return ListView.builder(
+              itemBuilder: (_, index) {
+                return NewsItem(state.newsList[index]);
+              },
+              itemCount: state.newsList.length,
+            );
+          }
+          return Container();
+        });
+    /*  FutureBuilder<NewsResponse>(
         future: ApiManager.getNews(searchWord: query),
         builder: (buildContext, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
@@ -61,7 +86,7 @@ class NewsSearchDelegate extends SearchDelegate {
             },
             itemCount: newsList?.length ?? 0,
           );
-        });
+        });*/
   }
 
   @override
