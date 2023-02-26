@@ -2,9 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:news/core/model/Source.dart';
 import 'package:news/ui/news/news_item.dart';
-
-t';
-
 import 'package:news/ui/news/news_viewModel.dart';
 import 'package:news/utils/dialog_utils.dart';
 
@@ -38,9 +35,9 @@ class _NewsListState extends State<NewsList> {
           } else if (state is NewsLoadedState) {
             return ListView.builder(
               itemBuilder: (_, index) {
-                return NewsItem(state.newsList![index]);
+                return NewsItem(state.newsList[index]);
               },
-              itemCount: state.newsList?.length ?? 0,
+              itemCount: state.newsList.length,
             );
           }
           return Container();
