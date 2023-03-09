@@ -1,3 +1,5 @@
+import 'package:news/domain/model/Source.dart';
+
 /// id : "bbc-sport"
 /// name : "BBC Sport"
 /// description : "The home of BBC Sport online. Includes live sports coverage, breaking news, results, video, audio and analysis on Football, F1, Cricket, Rugby Union, Rugby League, Golf, Tennis and all the main world sports, plus major events such as the Olympic Games."
@@ -6,7 +8,7 @@
 /// language : "en"
 /// country : "gb"
 
-class Source {
+class SourceDTO {
   String? id;
   String? name;
   String? description;
@@ -15,7 +17,7 @@ class Source {
   String? language;
   String? country;
 
-  Source({
+  SourceDTO({
     this.id,
     this.name,
     this.description,
@@ -25,7 +27,7 @@ class Source {
     this.country,
   });
 
-  Source.fromJson(dynamic json) {
+  SourceDTO.fromJson(dynamic json) {
     id = json['id'];
     name = json['name'];
     description = json['description'];
@@ -45,5 +47,17 @@ class Source {
     map['language'] = language;
     map['country'] = country;
     return map;
+  }
+
+  Source toDomainSource() {
+    return Source(
+      id: id,
+      name: name,
+      description: description,
+      url: url,
+      category: category,
+      language: language,
+      country: country,
+    );
   }
 }
