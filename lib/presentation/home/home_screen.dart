@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:news/ui/category/category_widget.dart';
-import 'package:news/ui/news/search_delegate.dart';
+import 'package:news/presentation/category/category_widget.dart';
+import 'package:news/presentation/news/search_delegate.dart';
 
 import 'category_style.dart';
 import 'drawer_content.dart';
@@ -43,8 +43,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       showSearch(
                           context: context, delegate: NewsSearchDelegate());
                     },
-                    icon: Icon(Icons.search))
-                : SizedBox()
+                    icon: const Icon(Icons.search))
+                : const SizedBox()
           ],
         ),
         drawer: Drawer(
