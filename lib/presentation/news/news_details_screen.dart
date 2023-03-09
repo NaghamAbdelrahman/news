@@ -1,9 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:news/core/model/News.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../../utils/date_utils.dart';
+import '../../domain/model/News.dart';
+import '../utils/date_utils.dart';
 
 class NewsDetailsScreen extends StatelessWidget {
   static String routeName = 'newsDetails';

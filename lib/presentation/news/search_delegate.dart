@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:news/ui/news/news_viewModel.dart';
+import 'package:news/presentation/news/news_viewModel.dart';
 
-import '../../utils/dialog_utils.dart';
+import '../utils/dialog_utils.dart';
+import 'di.dart';
 import 'news_item.dart';
 
 class NewsSearchDelegate extends SearchDelegate {
-  NewsListViewModel viewModel = NewsListViewModel();
+  NewsListViewModel viewModel = NewsListViewModel(injectGetNewsUseCase());
 
   @override
   ThemeData appBarTheme(BuildContext context) {
@@ -35,14 +36,14 @@ class NewsSearchDelegate extends SearchDelegate {
 
   @override
   Widget buildResults(BuildContext context) {
-    viewModel.getNewsBySearch(query);
+    viewModel.getNews(searchWord: query);
     return BlocConsumer<NewsListViewModel, NewsListState>(
         bloc: viewModel,
         listener: (context, state) {
           if (state is ErrorState) {
             DialogUtils.showMessageDialog(context, state.errorMessage,
                 posActionTittle: 'Try Again', posAction: () {
-              viewModel.getNewsBySourceId(query);
+              viewModel.getNews();
             }, isDismisable: false);
           }
         },

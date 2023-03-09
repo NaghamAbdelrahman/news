@@ -1,4 +1,6 @@
-import 'Source.dart';
+import 'package:news/domain/model/News.dart';
+
+import 'SourceDTO.dart';
 
 /// source : {"id":"bbc-news","name":"BBC News"}
 /// author : "https://www.facebook.com/bbcnews"
@@ -9,8 +11,8 @@ import 'Source.dart';
 /// publishedAt : "2023-01-11T16:44:16Z"
 /// content : "A man has been arrested on suspicion of murder over the fatal shooting of a woman at a pub on Christmas Eve.\r\nElle Edwards, 26, was shot outside outside The Lighthouse in Wallasey, Wirral, shortly be… [+1081 chars]"
 
-class News {
-  Source? source;
+class NewsDTO {
+  SourceDTO? source;
   String? author;
   String? title;
   String? description;
@@ -19,7 +21,7 @@ class News {
   String? publishedAt;
   String? content;
 
-  News({
+  NewsDTO({
     this.source,
     this.author,
     this.title,
@@ -30,8 +32,8 @@ class News {
     this.content,
   });
 
-  News.fromJson(dynamic json) {
-    source = json['source'] != null ? Source.fromJson(json['source']) : null;
+  NewsDTO.fromJson(dynamic json) {
+    source = json['source'] != null ? SourceDTO.fromJson(json['source']) : null;
     author = json['author'];
     title = json['title'];
     description = json['description'];
@@ -54,5 +56,18 @@ class News {
     map['publishedAt'] = publishedAt;
     map['content'] = content;
     return map;
+  }
+
+  News toDomainNews() {
+    return News(
+      source: source?.toDomainSource(),
+      author: author,
+      title: title,
+      description: description,
+      url: url,
+      urlToImage: urlToImage,
+      publishedAt: publishedAt,
+      content: content,
+    );
   }
 }
