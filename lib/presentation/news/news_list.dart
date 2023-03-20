@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:news/presentation/news/di.dart';
 import 'package:news/presentation/news/news_item.dart';
 import 'package:news/presentation/news/news_viewModel.dart';
 
+import '../../app/dependency_injection.dart';
 import '../../domain/model/News.dart';
 import '../../domain/model/Source.dart';
 import '../utils/dialog_utils.dart';

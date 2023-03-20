@@ -1,4 +1,3 @@
-import 'package:news/data/dataSource/sources_remote_dateSource_impl.dart';
 import 'package:news/domain/repository/sources_repository_contract.dart';
 
 import '../../domain/model/Source.dart';
@@ -14,6 +13,4 @@ class SourcesRepositoryImpl extends SourcesRepositoryContract {
   }
 }
 
-SourcesRepositoryContract injectSourcesRepository() {
-  return SourcesRepositoryImpl(injectSourcesDataSource());
-}
+

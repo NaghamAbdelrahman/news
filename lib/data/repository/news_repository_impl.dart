@@ -1,4 +1,3 @@
-import 'package:news/data/dataSource/news_remote_data_source_impl.dart';
 import 'package:news/domain/repository/news_repository_contract.dart';
 
 import '../../domain/model/News.dart';
@@ -16,6 +15,4 @@ class NewsRepositoryImpl extends NewsRepositoryContract {
   }
 }
 
-NewsRepositoryContract injectNewsRepository() {
-  return NewsRepositoryImpl(injectNewsDataSource());
-}
+

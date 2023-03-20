@@ -31,7 +31,3 @@ class NewsRemoteDataSourceImpl extends NewsRemoteDataSource {
     }
   }
 }
-
-NewsRemoteDataSource injectNewsDataSource() {
-  return NewsRemoteDataSourceImpl(ApiManager.getInstance());
-}

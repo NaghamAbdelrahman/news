@@ -30,6 +30,3 @@ class SourcesRemoteDataSourceImpl extends SourcesRemoteDataSource {
   }
 }
 
-SourcesRemoteDataSource injectSourcesDataSource() {
-  return SourcesRemoteDataSourceImpl(ApiManager.getInstance());
-}
