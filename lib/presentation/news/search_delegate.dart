@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:news/presentation/news/news_viewModel.dart';
 
+import '../../app/dependency_injection.dart';
 import '../utils/dialog_utils.dart';
-import 'di.dart';
 import 'news_item.dart';
 
 class NewsSearchDelegate extends SearchDelegate {

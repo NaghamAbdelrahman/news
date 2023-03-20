@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:news/presentation/category/category_tabs_widget.dart';
 import 'package:news/presentation/category/category_viewModel.dart';
-import 'package:news/presentation/category/di.dart';
 
+import '../../app/dependency_injection.dart';
 import '../home/category_style.dart';
 import '../utils/dialog_utils.dart';
 
